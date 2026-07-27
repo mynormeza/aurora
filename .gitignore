@@ -1,15 +1,51 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+# Gradle
+.gradle/
+build/
+.kotlin/
+
+# Local configuration (SDK path, machine-specific settings)
 local.properties
+
+# IntelliJ / Android Studio
+*.iml
+.idea/caches
+.idea/gradle.xml
+.idea/libraries
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/deploymentTargetDropdown.xml
+.idea/deploymentTargetSelector.xml
+.idea/androidTestResultsUserPreferences.xml
+.idea/other.xml
+.idea/shelf/
+
+# Build outputs
+*.apk
+*.aab
+*.ap_
+*.dex
+output-metadata.json
+
+# Signing — never commit keystores or their credentials
+*.jks
+*.keystore
+keystore.properties
+
+# Native builds
+.externalNativeBuild/
+.cxx/
+
+# Profiling / captures
+/captures
+*.hprof
+
+# Logs
+*.log
+
+# macOS
+.DS_Store
+
+# Version control merge artifacts
+*.orig
