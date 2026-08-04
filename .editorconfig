@@ -1,0 +1,17 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{kt,kts}]
+ktlint_code_style = android_studio
+# Compose idioms: composables are PascalCase functions.
+ktlint_function_naming_ignore_when_annotated_with = Composable
+# Trailing commas on multiline constructs (Compose/NIA convention, cleaner diffs).
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true
