@@ -53,6 +53,22 @@ fun AuroraSkeletonBlock(
 }
 
 @Composable
+fun AuroraSkeletonCircle(
+    diameter: Dp,
+    modifier: Modifier = Modifier,
+    reducedMotion: Boolean = false,
+) {
+    Box(
+        modifier = modifier
+            .size(diameter)
+            .clip(CircleShape)
+            .alpha(shimmerAlpha(reducedMotion))
+            .background(MaterialTheme.colorScheme.surfaceContainerHighest)
+            .clearAndSetSemantics { },
+    )
+}
+
+@Composable
 fun AuroraTransactionRowSkeleton(modifier: Modifier = Modifier, reduceMotion: Boolean = false) {
     Row(
         modifier = modifier

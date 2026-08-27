@@ -21,7 +21,7 @@ import com.aurora.bank.core.designsystem.theme.AuroraSizes
 import com.aurora.bank.core.designsystem.theme.Spacing
 
 @Composable
-fun AuroraButtons(
+fun AuroraButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
