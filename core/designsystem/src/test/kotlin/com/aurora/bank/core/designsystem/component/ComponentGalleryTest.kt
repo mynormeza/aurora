@@ -5,7 +5,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarData
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarVisuals
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -119,6 +124,33 @@ class ComponentGalleryTest {
             actions = { AuroraIconAction(AuroraIcons.download, "Download", {}) },
         )
     }
+
+    @Test
+    fun snackbar() = gallery {
+        AuroraSnackbar(
+            data = FakeSnackbarData(
+                message = "Statement requested — we'll notify you when it's ready",
+                actionLabel = "View",
+            ),
+        )
+        Text(
+            text = "Never used for money movement results — those get the full success screen.",
+            style = MaterialTheme.typography.bodySmall,
+        )
+    }
+}
+
+private class FakeSnackbarData(message: String, actionLabel: String?) : SnackbarData {
+    override val visuals: SnackbarVisuals = object : SnackbarVisuals {
+        override val actionLabel: String? = actionLabel
+        override val duration: SnackbarDuration = SnackbarDuration.Short
+        override val message: String = message
+        override val withDismissAction: Boolean = false
+    }
+
+    override fun dismiss() = Unit
+
+    override fun performAction() = Unit
 }
 
 private val GALLERY_WIDTH = 412.dp
