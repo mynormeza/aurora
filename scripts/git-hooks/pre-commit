@@ -30,6 +30,13 @@ if [ -z "$CHANGED_FILES" ]; then
     exit 0
 fi
 
+# build-logic is an included build (settings.gradle.kts -> pluginManagement
+# includeBuild), so its tasks are NOT reachable from the root build's
+# spotlessApply. It needs its own invocation, exactly like CI's
+# `./gradlew -p build-logic spotlessCheck`.
+ROOT_FILES="$(echo "$CHANGED_FILES" | grep -v '^build-logic/')"
+BUILD_LOGIC_FILES="$(echo "$CHANGED_FILES" | grep '^build-logic/')"
+
 echo "Running spotlessApply for the staged state of:"
 echo "$CHANGED_FILES"
 
@@ -39,8 +46,15 @@ if [ -s "$diff" ]; then
     git apply -R "$diff"
 fi
 
-./gradlew --quiet spotlessApply
-gradle_exit=$?
+gradle_exit=0
+
+if [ -n "$ROOT_FILES" ]; then
+    ./gradlew --quiet spotlessApply || gradle_exit=1
+fi
+
+if [ -n "$BUILD_LOGIC_FILES" ]; then
+    ./gradlew --quiet -p build-logic spotlessApply || gradle_exit=1
+fi
 
 echo "$CHANGED_FILES" | while read -r file; do
     if [ -f "$file" ]; then
