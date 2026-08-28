@@ -1,0 +1,26 @@
+[extend]
+useDefault = true
+
+# --- Custom rules ----------------------------------------------------------
+[[rules]]
+id = "generic-keystore-password"
+description = "Android keystore / signing password"
+regex = '''(?i)(store|key)Password\s*[:=]\s*['"][^'"]{4,}['"]'''
+tags = ["android", "signing"]
+
+# --- Allowlist -------------------------------------------------------------
+# Prevent false positives on template/example values and public pins.
+[allowlist]
+description = "Global allowlist for examples, templates, and public pins"
+paths = [
+    '''secrets\.properties\.example''',
+    '''\.gitleaks\.toml''',
+    '''.*\.example$''',
+    '''.*/test/.*fixtures?/.*''',      # test fixtures with fake data
+]
+regexes = [
+    '''your_secret_id_here''',
+    '''your_secret_key_here''',
+    '''sha256/AAAAAAAA.*''',           # placeholder cert pin
+    '''sha256/[A-Za-z0-9+/=]{40,}''',  # certificate pins are public keys, not secrets
+]
