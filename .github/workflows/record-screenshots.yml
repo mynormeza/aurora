@@ -28,20 +28,20 @@ jobs:
             - name: Set up Gradle
               uses: gradle/actions/setup-gradle@v4
 
-            - name: Record golden images
-              run: ./gradlew recordRoborazziDebug
+            -   name: Record golden images
+                run: ./gradlew recordPaparazziDebug
 
-            - name: Commit and push goldens
-              run: |
-                  git config user.name  "github-actions[bot]"
-                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-                  git add '**/screenshots/**/*.png'      # point at your real golden dir
-                  if git diff --staged --quiet; then
-                    echo "No screenshot changes to record."
-                  else
-                    git commit -m "chore: record Roborazzi golden images"
-                    git push
-                  fi
+            -   name: Commit and push goldens
+                run: |
+                    git config user.name  "github-actions[bot]"
+                    git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                    git add '**/src/test/snapshots/**/*.png'
+                    if git diff --staged --quiet; then
+                      echo "No screenshot changes to record."
+                    else
+                      git commit -m "chore: record Paparazzi golden images"
+                      git push
+                    fi
 
             - name: Remove the label so it can be re-applied later
               if: always()
