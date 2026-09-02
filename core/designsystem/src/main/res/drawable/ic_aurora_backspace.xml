@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    The designer's own asset (design rev 3 · S-029): `shared/design/ic_backspace.svg`,
+    a 24×24 stroke glyph (1.8 weight, rounded joins — the icon set's geometry),
+    shipped because Material Symbols' backspace was never part of the set.
+    Stroke-converted verbatim; strokeColor is white so Compose's Icon() tint
+    decides the colour at the call site.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:strokeColor="@android:color/white"
+        android:strokeWidth="1.8"
+        android:strokeLineJoin="round"
+        android:pathData="M9.1 5.5h8.4A2.5 2.5 0 0 1 20 8v8a2.5 2.5 0 0 1-2.5 2.5H9.1a2.5 2.5 0 0 1-1.94-.92l-3.28-4a2.5 2.5 0 0 1 0-3.16l3.28-4A2.5 2.5 0 0 1 9.1 5.5Z" />
+    <path
+        android:strokeColor="@android:color/white"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M11.6 9.8l4.4 4.4m0-4.4l-4.4 4.4" />
+</vector>

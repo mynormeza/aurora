@@ -10,6 +10,7 @@ dependencies {
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.compose.compiler.gradlePlugin)
     compileOnly(libs.spotless.gradlePlugin)
+    compileOnly(libs.paparazzi.gradlePlugin)
 }
 
 spotless {
@@ -48,6 +49,10 @@ gradlePlugin {
         register("spotless") {
             id = "holehopper.spotless"
             implementationClass = "SpotlessConventionPlugin"
+        }
+        register("paparazzi") {
+            id = "aurora.paparazzi"
+            implementationClass = "PaparazziConventionPlugin"
         }
     }
 }

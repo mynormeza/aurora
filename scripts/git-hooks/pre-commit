@@ -1,12 +1,41 @@
 #!/bin/sh
 set +e
 
+
+if ! command -v gitleaks > /dev/null 2>&1; then
+    echo "pre-commit: gitleaks is not installed — refusing to commit unscanned." >&2
+    echo "pre-commit: install with:  brew install gitleaks" >&2
+    echo "pre-commit: deliberate bypass, if you must:  git commit --no-verify" >&2
+    exit 1
+fi
+
+if gitleaks git --help > /dev/null 2>&1; then
+    gitleaks git --staged --no-banner --redact --config .gitleaks.toml
+else
+    gitleaks protect --staged --no-banner --redact --config .gitleaks.toml
+fi
+leaks_exit=$?
+
+if [ $leaks_exit -ne 0 ]; then
+    echo "pre-commit: gitleaks found a secret in the staged changes." >&2
+    echo "pre-commit: nothing was modified — unstage it, or allowlist it in" >&2
+    echo "pre-commit: .gitleaks.toml if it is genuinely a false positive." >&2
+    exit 1
+fi
+
 CHANGED_FILES="$(git --no-pager diff --name-status --no-color --cached | awk '$1 != "D" && $NF ~ /\.kts?$/ { print $NF }')"
 
 if [ -z "$CHANGED_FILES" ]; then
     echo "No staged Kotlin files — skipping Spotless."
     exit 0
 fi
+
+# build-logic is an included build (settings.gradle.kts -> pluginManagement
+# includeBuild), so its tasks are NOT reachable from the root build's
+# spotlessApply. It needs its own invocation, exactly like CI's
+# `./gradlew -p build-logic spotlessCheck`.
+ROOT_FILES="$(echo "$CHANGED_FILES" | grep -v '^build-logic/')"
+BUILD_LOGIC_FILES="$(echo "$CHANGED_FILES" | grep '^build-logic/')"
 
 echo "Running spotlessApply for the staged state of:"
 echo "$CHANGED_FILES"
@@ -17,8 +46,15 @@ if [ -s "$diff" ]; then
     git apply -R "$diff"
 fi
 
-./gradlew --quiet spotlessApply
-gradle_exit=$?
+gradle_exit=0
+
+if [ -n "$ROOT_FILES" ]; then
+    ./gradlew --quiet spotlessApply || gradle_exit=1
+fi
+
+if [ -n "$BUILD_LOGIC_FILES" ]; then
+    ./gradlew --quiet -p build-logic spotlessApply || gradle_exit=1
+fi
 
 echo "$CHANGED_FILES" | while read -r file; do
     if [ -f "$file" ]; then
